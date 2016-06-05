@@ -7,9 +7,7 @@
 /build
 /captures
 .idea
-gradlew
-gradlew.bat
-gradle
+
 
 # Built application files
 *.apk
