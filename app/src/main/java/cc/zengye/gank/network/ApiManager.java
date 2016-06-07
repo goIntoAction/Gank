@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import java.util.concurrent.TimeUnit;
 
 import cc.zengye.gank.network.api.GankApi;
+import cc.zengye.gank.common.Constants;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -29,14 +30,14 @@ public class ApiManager {
                 .retryOnConnectionFailure(true).build();
         Retrofit retrofit = new Retrofit.Builder()
                 .client(client)
-                .baseUrl("http://api.gank.io/")
+                .baseUrl(Constants.GANK_API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
         mGankApi = retrofit.create(GankApi.class);
     }
 
-    public ApiManager getInstance(){
+    public static final ApiManager getInstance(){
         return Holder.INSTANCE;
     }
 

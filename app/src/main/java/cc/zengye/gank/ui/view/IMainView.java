@@ -7,7 +7,7 @@ import cc.zengye.gank.model.BaseModel;
 /**
  * Created by zengye on 16-6-7.
  */
-public interface IMainView<T extends BaseModel> extends IBaseView {
+public interface IMainView<T extends BaseModel> extends ISwipeView<T> {
 
     public void appendData(List<T> data);
 }
