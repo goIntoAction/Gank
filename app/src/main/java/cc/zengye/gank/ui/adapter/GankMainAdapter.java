@@ -1,4 +1,4 @@
-package cc.zengye.gank.adapter;
+package cc.zengye.gank.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
