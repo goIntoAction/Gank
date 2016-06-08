@@ -3,17 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:foreground="?attr/selectableItemBackground"
-    app:cardElevation="2dp">
+    android:layout_marginBottom="5dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginTop="5dp"
+    app:cardCornerRadius="5dp"
+    app:elevation="1dp">
 
     <RelativeLayout
         android:padding="10dp"
         android:layout_width="match_parent"
-        android:layout_height="80dp">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/desc"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:text="标题"
             android:textColor="@android:color/black"
             android:layout_width="match_parent"
@@ -22,7 +26,7 @@
 
         <TextView
             android:id="@+id/who"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="@android:color/darker_gray"
             android:text="推荐人"
             android:layout_width="wrap_content"
@@ -32,7 +36,7 @@
 
         <TextView
             android:id="@+id/publishedAt"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="@android:color/darker_gray"
             android:text="发布时间"
             android:layout_width="wrap_content"

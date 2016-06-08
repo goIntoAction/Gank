@@ -6,7 +6,7 @@
     <ImageView
         android:id="@+id/iv_image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="250dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"/>
 
@@ -16,9 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:textColor="@color/black_50"
+        android:textSize="18sp"
         android:visibility="visible" />
 
 </FrameLayout>

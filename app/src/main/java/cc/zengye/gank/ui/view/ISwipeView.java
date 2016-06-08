@@ -13,4 +13,6 @@ public interface ISwipeView<T extends BaseModel> extends IBaseView<T> {
     void showError(Throwable throwable);
     void showRefresh();
     void hideRefresh();
+    void noMoreData();
+    void latestData();
 }

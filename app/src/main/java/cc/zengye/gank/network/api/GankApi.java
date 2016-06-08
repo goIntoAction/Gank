@@ -12,10 +12,10 @@ import rx.Observable;
  * Created by fanny on 16/6/5.
  */
 public interface GankApi {
-    @GET("/day/{year}/{month}/{day}")
+    @GET("/api/day/{year}/{month}/{day}")
     Observable<GankData> getGankData(@Path("year") int year, @Path("month") int month, @Path("day") int day);
 
-    @GET("/data/{type}/{pagesize}/{page}")
+    @GET("/api/data/{type}/{pagesize}/{page}")
     Observable<List<GankModel>> getSingleType(@Path("type")String type, @Path("pagesize")int pageSize
             ,@Path("page")int page);
 }

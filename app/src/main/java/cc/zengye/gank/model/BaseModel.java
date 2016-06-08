@@ -7,5 +7,5 @@ import com.google.gson.annotations.SerializedName;
  */
 public class BaseModel {
     @SerializedName("_id")
-    private long id;
+    private String id;
 }

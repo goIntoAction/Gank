@@ -1,4 +1,4 @@
-package cc.zengye.gank.adapter;
+package cc.zengye.gank.ui.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -41,13 +41,13 @@ public class GankMainAdapter extends RecyclerView.Adapter<GankMainAdapter.ViewHo
         View view;
         switch (viewType) {
             case ITEM_TYPE_NORMAL:
-                view = LayoutInflater.from(mActivity).inflate(R.layout.item_gank_normal, null);
+                view = LayoutInflater.from(mActivity).inflate(R.layout.item_gank_normal_linear,parent, false);
                 return new ViewHolderNormal(view);
             case ITEM_TYPE_CATEGORY:
-                view = LayoutInflater.from(mActivity).inflate(R.layout.item_gank_category, null);
+                view = LayoutInflater.from(mActivity).inflate(R.layout.item_gank_category, parent, false);
                 return new ViewHolderCategory(view);
             case ITEM_TYPE_IMAGE:
-                view = LayoutInflater.from(mActivity).inflate(R.layout.item_gank_image, null);
+                view = LayoutInflater.from(mActivity).inflate(R.layout.item_gank_image, parent, false);
                 return new ViewHolderImage(view);
         }
         return null;
@@ -143,16 +143,28 @@ public class GankMainAdapter extends RecyclerView.Adapter<GankMainAdapter.ViewHo
         }
     }
 
-    public void setData(List<GankModel> models) {
+    public void setData(List<GankModel> models){
+        mModels.clear();
+        handleData(models);
+    }
+
+    public void appendData(List<GankModel> models){
+        handleData(models);
+
+    }
+
+    public void handleData(List<GankModel> models) {
         String lastCategory = "";
         for (GankModel model : models) {
-            if (!"福利".equals(model.type) && lastCategory.equals(model.type)) {
+            if (!"福利".equals(model.type) && !lastCategory.equals(model.type)) {
                 GankModel category = new GankModel();
+                lastCategory = model.type;
                 category.type = "category";
                 category.desc = model.type;
                 mModels.add(category);
             }
             mModels.add(model);
         }
+        notifyDataSetChanged();
     }
 }

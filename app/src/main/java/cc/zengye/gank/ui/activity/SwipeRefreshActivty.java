@@ -26,12 +26,12 @@ public abstract class SwipeRefreshActivty extends BaseActivity {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                onRefresh();
+                onSwipeRefresh();
             }
         });
     }
 
-    public abstract void onRefresh();
+    public abstract void onSwipeRefresh();
 
     public boolean isRefreshing() {
         return mSwipeRefreshLayout.isRefreshing();
