@@ -37,4 +37,29 @@ public class MainActivity extends SwipeRefreshActivty implements IMainView<GankM
     public void loadData(List<GankModel> data) {
 
     }
+
+    @Override
+    public void getDataCompleted() {
+
+    }
+
+    @Override
+    public void finishLoadMore() {
+
+    }
+
+    @Override
+    public void showError(Throwable throwable) {
+
+    }
+
+    @Override
+    public void showRefresh() {
+
+    }
+
+    @Override
+    public void hideRefresh() {
+
+    }
 }

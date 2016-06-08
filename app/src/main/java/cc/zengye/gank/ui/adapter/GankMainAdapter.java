@@ -3,6 +3,7 @@ package cc.zengye.gank.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -37,18 +38,30 @@ public class GankMainAdapter extends RecyclerView.Adapter<GankMainAdapter.ViewHo
 
     @Override
     public ViewHolderItem onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view;
+        switch (viewType) {
+            case ITEM_TYPE_NORMAL:
+                view = LayoutInflater.from(mActivity).inflate(R.layout.item_gank_normal, null);
+                return new ViewHolderNormal(view);
+            case ITEM_TYPE_CATEGORY:
+                view = LayoutInflater.from(mActivity).inflate(R.layout.item_gank_category, null);
+                return new ViewHolderCategory(view);
+            case ITEM_TYPE_IMAGE:
+                view = LayoutInflater.from(mActivity).inflate(R.layout.item_gank_image, null);
+                return new ViewHolderImage(view);
+        }
         return null;
     }
 
     @Override
     public void onBindViewHolder(ViewHolderItem holder, int position) {
         GankModel gankModel = mModels.get(position);
-
+        holder.bindItem(mActivity, gankModel);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mModels.size();
     }
 
     abstract static class ViewHolderItem extends RecyclerView.ViewHolder {
@@ -59,7 +72,17 @@ public class GankMainAdapter extends RecyclerView.Adapter<GankMainAdapter.ViewHo
         abstract void bindItem(Context context, GankModel gankModel);
     }
 
-
+    @Override
+    public int getItemViewType(int position) {
+        GankModel model = mModels.get(position);
+        if("福利".equals(model.type)) {
+            return ITEM_TYPE_IMAGE;
+        } else if("category".equals(model.type)) {
+            return ITEM_TYPE_CATEGORY;
+        } else {
+            return ITEM_TYPE_NORMAL;
+        }
+    }
 
     class ViewHolderNormal extends ViewHolderItem {
         private TextView mDesc;
@@ -91,7 +114,7 @@ public class GankMainAdapter extends RecyclerView.Adapter<GankMainAdapter.ViewHo
 
         @Override
         void bindItem(Context context, GankModel gankModel) {
-            mCategory.setText(gankModel.type);
+            mCategory.setText(gankModel.desc);
         }
     }
 
@@ -120,4 +143,16 @@ public class GankMainAdapter extends RecyclerView.Adapter<GankMainAdapter.ViewHo
         }
     }
 
+    public void setData(List<GankModel> models) {
+        String lastCategory = "";
+        for (GankModel model : models) {
+            if (!"福利".equals(model.type) && lastCategory.equals(model.type)) {
+                GankModel category = new GankModel();
+                category.type = "category";
+                category.desc = model.type;
+                mModels.add(category);
+            }
+            mModels.add(model);
+        }
+    }
 }
