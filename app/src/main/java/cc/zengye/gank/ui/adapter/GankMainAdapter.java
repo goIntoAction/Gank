@@ -12,8 +12,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,9 +29,12 @@ public class GankMainAdapter extends RecyclerView.Adapter<GankMainAdapter.ViewHo
     public static final int ITEM_TYPE_CATEGORY = 2;
     private BaseActivity mActivity;
     private List<GankModel> mModels;
-    public GankMainAdapter(BaseActivity baseActivity){
+    private OnItemClickListener mOnItemClickListener;
+
+    public GankMainAdapter(BaseActivity baseActivity, OnItemClickListener onItemClickListener){
         mActivity = baseActivity;
         mModels = new ArrayList<>();
+        mOnItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -42,13 +43,13 @@ public class GankMainAdapter extends RecyclerView.Adapter<GankMainAdapter.ViewHo
         switch (viewType) {
             case ITEM_TYPE_NORMAL:
                 view = LayoutInflater.from(mActivity).inflate(R.layout.item_gank_normal_linear,parent, false);
-                return new ViewHolderNormal(view);
+                return new ViewHolderNormal(view, mOnItemClickListener);
             case ITEM_TYPE_CATEGORY:
                 view = LayoutInflater.from(mActivity).inflate(R.layout.item_gank_category, parent, false);
                 return new ViewHolderCategory(view);
             case ITEM_TYPE_IMAGE:
                 view = LayoutInflater.from(mActivity).inflate(R.layout.item_gank_image, parent, false);
-                return new ViewHolderImage(view);
+                return new ViewHolderImage(view, mOnItemClickListener);
         }
         return null;
     }
@@ -84,23 +85,35 @@ public class GankMainAdapter extends RecyclerView.Adapter<GankMainAdapter.ViewHo
         }
     }
 
-    class ViewHolderNormal extends ViewHolderItem {
+    class ViewHolderNormal extends ViewHolderItem implements View.OnClickListener {
         private TextView mDesc;
         private TextView mPublishTime;
         private TextView mWho;
+        private GankModel mGankModel;
+        private OnItemClickListener mOnItemClickListener;
 
-        public ViewHolderNormal(View itemView) {
+        public ViewHolderNormal(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
+            itemView.setOnClickListener(this);
             mDesc = (TextView) itemView.findViewById(R.id.desc);
             mPublishTime = (TextView) itemView.findViewById(R.id.publishedAt);
             mWho = (TextView) itemView.findViewById(R.id.who);
+            mOnItemClickListener = onItemClickListener;
         }
 
         @Override
         void bindItem(Context context, GankModel gankModel) {
+            mGankModel = gankModel;
             mDesc.setText(gankModel.desc);
             mPublishTime.setText(Utils.formatDate(gankModel.publishedAt));
             mWho.setText(gankModel.who);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if(mOnItemClickListener != null && mGankModel != null) {
+                mOnItemClickListener.onItemClickListener(mGankModel,v);
+            }
         }
     }
 
@@ -118,18 +131,23 @@ public class GankMainAdapter extends RecyclerView.Adapter<GankMainAdapter.ViewHo
         }
     }
 
-    class ViewHolderImage extends ViewHolderItem {
+    class ViewHolderImage extends ViewHolderItem  implements View.OnClickListener {
         private ImageView mImageView;
         private TextView mImageName;
+        private GankModel mGankModel;
+        private OnItemClickListener mOnItemClickListener;
 
-        public ViewHolderImage(View itemView) {
+        public ViewHolderImage(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
             mImageView = (ImageView) itemView.findViewById(R.id.iv_image);
             mImageName = (TextView) itemView.findViewById(R.id.tv_image_name);
+            mImageView.setOnClickListener(this);
+            mOnItemClickListener = onItemClickListener;
         }
 
         @Override
         void bindItem(Context context, GankModel gankModel) {
+            mGankModel = gankModel;
             RequestManager rm = null;
             if (context instanceof Activity) {
                 Activity activity = (Activity) context;
@@ -140,6 +158,13 @@ public class GankMainAdapter extends RecyclerView.Adapter<GankMainAdapter.ViewHo
 
             rm.load(gankModel.url).into(mImageView);
             mImageName.setText(Utils.formatDate(gankModel.publishedAt));
+        }
+
+        @Override
+        public void onClick(View v) {
+            if(mOnItemClickListener != null && mGankModel != null) {
+                mOnItemClickListener.onItemClickListener(mGankModel,v);
+            }
         }
     }
 
@@ -166,5 +191,9 @@ public class GankMainAdapter extends RecyclerView.Adapter<GankMainAdapter.ViewHo
             mModels.add(model);
         }
         notifyDataSetChanged();
+    }
+
+    public interface OnItemClickListener{
+        void onItemClickListener(GankModel gank,View viewImage);
     }
 }

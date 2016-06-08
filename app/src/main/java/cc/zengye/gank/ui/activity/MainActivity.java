@@ -1,5 +1,6 @@
 package cc.zengye.gank.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import cc.zengye.gank.R;
+import cc.zengye.gank.common.Constants;
 import cc.zengye.gank.model.GankModel;
 import cc.zengye.gank.presenter.MainPresenter;
 import cc.zengye.gank.ui.adapter.GankMainAdapter;
@@ -41,7 +43,14 @@ public class MainActivity extends SwipeRefreshActivty implements IMainView<GankM
         mRecycleView = (RecyclerView) findViewById(R.id.rv_gank);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecycleView.setLayoutManager(layoutManager);
-        mAdapter = new GankMainAdapter(this);
+        mAdapter = new GankMainAdapter(this, new GankMainAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClickListener(GankModel gank, View viewImage) {
+                Intent intent = new Intent(MainActivity.this,GankWebActivity.class);
+                intent.putExtra(Constants.WEB_VIEW_URL,gank.url);
+                startActivity(intent);
+            }
+        });
         mRecycleView.setAdapter(mAdapter);
         mRecycleView.addOnScrollListener(new EndlessRecyclerOnScrollListener(layoutManager) {
             @Override
